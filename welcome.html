@@ -38,8 +38,8 @@
                         <span id="user-initial">U</span>
                     </div>
                     <div class="user-details">
-                        <span class="user-name" id="profile-username">User</span>
-                        <span class="user-status">Online</span>
+                        <span class="user-name" id="profile-username">User 1</span>
+                        <span class="user-status" id="profile-username2" style="font-size:12px; opacity:0.8;">User 2</span>
                     </div>
                 </div>
                 <button class="logout-btn" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i>
@@ -197,11 +197,16 @@
 
     <script>
         // Global State management
-        const username = localStorage.getItem('snap_username') || 'SnapCatter';
+        // Global State management
+        const username = localStorage.getItem('snap_username') || 'User 1';
+        const username2 = localStorage.getItem('snap_username2') || 'User 2';
 
-        // Display Username on DOM
+        // Display Usernames on DOM
         document.getElementById('profile-username').textContent = username;
         document.getElementById('user-initial').textContent = username.charAt(0).toUpperCase();
+        if (document.getElementById('profile-username2')) {
+            document.getElementById('profile-username2').textContent = `User 2: ${username2}`;
+        }
 
         // Animate Snap Score
         const targetScore = Math.floor(Math.random() * 20000) + 120000;

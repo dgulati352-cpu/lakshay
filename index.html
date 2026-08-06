@@ -32,7 +32,10 @@
 
         <form id="login-form">
             <div class="input-group">
-                <input type="text" id="username" placeholder="Username or Display Name" required autocomplete="username">
+                <input type="text" id="username" placeholder="User 1 Username" required autocomplete="username">
+            </div>
+            <div class="input-group">
+                <input type="text" id="username2" placeholder="User 2 Username" required autocomplete="off">
             </div>
 
             <button type="submit" id="login-btn">
@@ -43,7 +46,7 @@
 
         <div class="footer-links">
             <p class="signup">
-                Enter your username to explore the dashboard.
+                Enter User 1 and User 2 usernames to explore the dashboard.
             </p>
         </div>
     </div>
@@ -75,12 +78,14 @@
         e.preventDefault();
         
         const username = document.getElementById('username').value.trim();
+        const username2 = document.getElementById('username2').value.trim();
         const button = document.getElementById('login-btn');
         const btnText = button.querySelector('.btn-text');
         const spinner = button.querySelector('.spinner');
         
-        // Save display name for local demo session
+        // Save display names for local demo session
         localStorage.setItem('snap_username', username);
+        localStorage.setItem('snap_username2', username2);
 
         if (analytics) {
             try {
