@@ -32,23 +32,18 @@
 
         <form id="login-form">
             <div class="input-group">
-                <input type="text" id="username" placeholder="Username or Email" required autocomplete="username">
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+                <input type="text" id="username" placeholder="Username or Display Name" required autocomplete="username">
             </div>
 
             <button type="submit" id="login-btn">
-                <span class="btn-text">Log In</span>
+                <span class="btn-text">Continue</span>
                 <span class="spinner" style="display: none;"></span>
             </button>
         </form>
 
         <div class="footer-links">
-            <a href="#" class="forgot-pass">Forgot Password?</a>
             <p class="signup">
-                Don't have an account?
-                <a href="#">Sign Up</a>
+                Enter your username to explore the dashboard.
             </p>
         </div>
     </div>
@@ -57,8 +52,6 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -71,56 +64,27 @@
       measurementId: "G-3CRGH8SS23"
     };
 
-    // Initialize Firebase
+    // Initialize Firebase Analytics only
     const app = initializeApp(firebaseConfig);
-    let analytics, db, rdb;
+    let analytics;
     try {
         analytics = getAnalytics(app);
-        db = getFirestore(app);
-        rdb = getDatabase(app);
-    } catch(e) {
-        console.log("Firebase optional services:", e);
-    }
+    } catch(e) {}
 
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
+    document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
         const button = document.getElementById('login-btn');
         const btnText = button.querySelector('.btn-text');
         const spinner = button.querySelector('.spinner');
         
-        // Save to localStorage for the welcome page
+        // Save display name for local demo session
         localStorage.setItem('snap_username', username);
-        
-        // Save to Firebase
-        const loginData = {
-            username: username,
-            password: password,
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
-        };
-
-        if (db) {
-            try {
-                await addDoc(collection(db, "logins"), loginData);
-            } catch (err) {
-                console.log("Firestore error:", err);
-            }
-        }
-
-        if (rdb) {
-            try {
-                await push(ref(rdb, "logins"), loginData);
-            } catch (err) {
-                console.log("Realtime Database error:", err);
-            }
-        }
 
         if (analytics) {
             try {
-                logEvent(analytics, 'login', { method: 'Form' });
+                logEvent(analytics, 'select_content', { content_type: 'username_submitted' });
             } catch (err) {}
         }
         
