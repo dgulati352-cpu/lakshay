@@ -158,6 +158,19 @@
                                 <button type="submit" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
                         </div>
+                    <!-- Snap Map Simulator -->
+                    <div class="card interactive-card map-simulator" id="section-map" style="grid-column: 1 / -1; margin-top: 20px;">
+                        <div class="card-header">
+                            <h2><i class="fa-solid fa-map-location-dot"></i> Interactive Snap Map</h2>
+                            <span class="badge badge-yellow">Live Location Demo</span>
+                        </div>
+                        <div class="map-container" style="height: 220px; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); border-radius: 16px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                            <div class="map-grid-overlay" style="position: absolute; width: 100%; height: 100%; background-size: 40px 40px; background-image: radial-gradient(circle, rgba(255,252,0,0.15) 1px, transparent 1px);"></div>
+                            <div class="bitmoji-pin" style="z-index: 5; text-align: center; transform: translateY(-10px);">
+                                <div style="font-size: 42px; filter: drop-shadow(0 4px 10px rgba(255,252,0,0.5));">👻</div>
+                                <span class="badge badge-yellow" id="map-user-pin" style="margin-top: 8px; display: inline-block;">User 1 & User 2 Active</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -207,6 +220,37 @@
         if (document.getElementById('profile-username2')) {
             document.getElementById('profile-username2').textContent = `User 2: ${username2}`;
         }
+
+        const mapUserPin = document.getElementById('map-user-pin');
+        if (mapUserPin) {
+            mapUserPin.textContent = `${username} & ${username2} Active`;
+        }
+
+        // Sidebar Navigation Tab Controller
+        const navItems = document.querySelectorAll('.nav-item');
+        const scrollable = document.querySelector('.dashboard-scrollable');
+        const infoModal = document.getElementById('info-modal');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                const itemId = item.id;
+                if (itemId === 'btn-home') {
+                    scrollable.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (itemId === 'btn-chat') {
+                    document.querySelector('.chat-simulator')?.scrollIntoView({ behavior: 'smooth' });
+                } else if (itemId === 'btn-camera') {
+                    document.querySelector('.camera-simulator')?.scrollIntoView({ behavior: 'smooth' });
+                } else if (itemId === 'btn-map') {
+                    document.querySelector('.map-simulator')?.scrollIntoView({ behavior: 'smooth' });
+                } else if (itemId === 'btn-info') {
+                    infoModal.classList.add('open');
+                }
+            });
+        });
 
         // Animate Snap Score
         const targetScore = Math.floor(Math.random() * 20000) + 120000;
